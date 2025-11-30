@@ -1,0 +1,23 @@
+{
+  "name": "Naman Sahu",
+  "title": "Java Backend Developer",
+  "email": "naman.sahu.2606@gmail.com",
+  "phone": "+91-9977212663",
+  "linkedin": "https://www.linkedin.com/in/naman-sahu-2502a8184/",
+  "github": "https://github.com/buildWithNaman",
+  "summary": "Java Backend Developer with 2+ years of experience building scalable microservices using Spring Boot, Kafka, MongoDB, and CI/CD.",
+  "skills": ["Java", "Spring Boot", "MongoDB", "Kafka", "Docker", "Kubernetes", "Microservices", "CI/CD"],
+  "projects": [
+    {
+      "title": "BDBDecisionPlatform",
+      "description": "Enterprise analytics platform — data ingestion, dashboards, and MLOps integrations.",
+      "link": "https://www.bdb.ai"
+    },
+    {
+      "title": "Online Novel Reading System",
+      "description": "Full stack web app built with Spring Boot and Angular for novel reading.",
+      "link": ""
+    }
+  ],
+  "resume_pdf": "/resume/NamanSahuResume.pdf"
+}
