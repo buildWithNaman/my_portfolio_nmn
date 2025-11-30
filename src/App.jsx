@@ -29,10 +29,10 @@ export default function App(){
             <h2 className="text-2xl font-semibold">About</h2>
             <div className="flex gap-3 items-center">
               <a href={resume.resume_pdf} target="_blank" className="text-sm underline">Download CV</a>
-              <AiSummary resumeText={`${resume.summary}\n\nProjects:\n${resume.projects.map(p=>p.title+': '+p.description).join('\n')}`} />
+              <AiSummary resumeText={`${resume.about}\n\nProjects:\n${resume.projects.map(p=>p.title+': '+p.description).join('\n')}`} />
             </div>
           </div>
-          <p className="mt-4 text-gray-700">{resume.summary}</p>
+          <p className="mt-4 text-gray-700">{resume.about}</p>
         </section>
 
         <Skills skills={resume.skills}/>

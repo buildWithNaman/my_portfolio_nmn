@@ -1,12 +1,13 @@
 {
   "name": "Naman Sahu",
-  "title": "Java Backend Developer",
+  "title": "Java Developer",
   "email": "naman.sahu.2606@gmail.com",
   "phone": "+91-9977212663",
   "linkedin": "https://www.linkedin.com/in/naman-sahu-2502a8184/",
   "github": "https://github.com/buildWithNaman",
-  "summary": "Java Backend Developer with 2+ years of experience building scalable microservices using Spring Boot, Kafka, MongoDB, and CI/CD.",
-  "skills": ["Java", "Spring Boot", "MongoDB", "Kafka", "Docker", "Kubernetes", "Microservices", "CI/CD"],
+  "about":"Java Backend Developer with over 2 years of hands-on experience specializing in designing, developing, and deploying scalable microservice-based applications. My expertise lies in the Spring Boot ecosystem , coupled with strong skills in data persistence (Spring Data JPA, Hibernate, MongoDB, MySQL), and building highly performant systems.",
+  "summary": "Java | Spring Boot | Microservices Architecture",
+  "skills": ["Java", "Spring Boot", "Microservices", "MongoDB", "MySQL", "Kafka"],
   "projects": [
     {
       "title": "BDBDecisionPlatform",
