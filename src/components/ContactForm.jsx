@@ -1,11 +1,13 @@
-import React, { useRef } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import SuccessPopup from "./SuccessPopup";
 
-
 export default function ContactForm({ resume }) {
-  const formRef = useRef();
   const [showPopup, setShowPopup] = useState(false);
+
+  // Add proper form states
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,9 +21,12 @@ export default function ContactForm({ resume }) {
     const data = await res.json();
 
     if (data.success) {
+      // Clear form
       setName("");
       setEmail("");
       setMessage("");
+
+      // Show popup
       setShowPopup(true);
     } else {
       alert("Failed to send message.");
@@ -31,64 +36,50 @@ export default function ContactForm({ resume }) {
   return (
     <section id="contact" className="mt-6">
       <h3 className="text-xl font-semibold">Contact</h3>
-      <form
-        ref={formRef}
-        onSubmit={handleSubmit}
-        className="mt-3 max-w-lg space-y-3"
-      >
+
+      <form onSubmit={handleSubmit} className="mt-3 max-w-lg space-y-3">
+
         <input
-          name="from_name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
           placeholder="Your name"
           className="w-full p-2 border rounded"
         />
+
         <input
-          name="reply_to"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
           placeholder="Your email"
           className="w-full p-2 border rounded"
         />
+
         <textarea
-          name="message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           required
           placeholder="Message"
           className="w-full p-2 border rounded"
         />
+
         <div className="flex gap-3">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-primary text-white rounded"
-          >
+          <button type="submit" className="px-4 py-2 bg-primary text-white rounded">
             Send
           </button>
+
           <a className="px-4 py-2 rounded border" href={`tel:${resume.phone}`}>
             Call
           </a>
-          <a
-            className="px-4 py-2 rounded border"
-            href={`mailto:${resume.email}`}
-          >
+
+          <a className="px-4 py-2 rounded border" href={`mailto:${resume.email}`}>
             Email
           </a>
         </div>
       </form>
 
-      {status === "sending" && (
-        <p className="text-sm text-gray-500 mt-2">Sending…</p>
-      )}
-      {status === "sent" && (
-        <p className="text-sm text-green-600 mt-2">Message sent — thank you!</p>
-      )}
-      {status === "error" && (
-        <p className="text-sm text-red-600 mt-2">Error sending message.</p>
-      )}
-      {status === "mailto" && (
-        <p className="text-sm text-gray-500 mt-2">
-          Opened mail client as fallback.
-        </p>
-      )}
+      {/* Success Popup */}
+      {showPopup && <SuccessPopup onClose={() => setShowPopup(false)} />}
     </section>
   );
 }
-
-{showPopup && <SuccessPopup onClose={() => setShowPopup(false)} />}
