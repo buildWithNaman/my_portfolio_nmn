@@ -1,4 +1,4 @@
-import { Resend } from 'resend';
+import { Resend } from "resend";
 
 export default async function handler(req, res) {
   try {
@@ -16,22 +16,19 @@ export default async function handler(req, res) {
 
     const data = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
-      to: "your-email@gmail.com",     // <---- YOUR EMAIL HERE
+      to: "namansahu1313@gmail.com",   // ← YOUR EMAIL
       subject: "New Portfolio Contact Message",
       html: `
-        <h2>New Contact Form Submission:</h2>
+        <h2>New Contact Form Submission</h2>
         <p><b>Name:</b> ${name}</p>
         <p><b>Email:</b> ${email}</p>
         <p><b>Message:</b><br/>${message}</p>
       `
     });
 
-    console.log("Email sent:", data);
-
-    return res.status(200).json({ success: true, message: "Email sent successfully" });
-
+    return res.status(200).json({ success: true, data });
   } catch (error) {
-    console.error("Email error:", error);
-    return res.status(500).json({ error: "Failed to send message" });
+    console.error("Resend error:", error);
+    return res.status(500).json({ error: "Server error" });
   }
 }
