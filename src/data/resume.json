@@ -7,7 +7,7 @@
   "github": "https://github.com/buildWithNaman",
   "about":"Java Backend Developer with over 2 years of hands-on experience specializing in designing, developing, and deploying scalable microservice-based applications. My expertise lies in the Spring Boot ecosystem , coupled with strong skills in data persistence (Spring Data JPA, Hibernate, MongoDB, MySQL), and building highly performant systems.",
   "summary": "Java | Spring Boot | Microservices Architecture",
-  "skills": ["Java", "Spring Boot", "Microservices", "MongoDB", "MySQL", "Kafka"],
+  "skills": ["Java", "Spring Boot", "Microservices", "MongoDB", "MySQL", "Kafka", "React"],
   "projects": [
     {
       "title": "BDBDecisionPlatform",

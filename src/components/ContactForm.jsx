@@ -72,7 +72,7 @@ export default function ContactForm({ resume }) {
             Call
           </a>
 
-          <a className="px-4 py-2 rounded border" href={`mailto:${resume.email}`}>
+          <a className="px-4 py-2 rounded border" href={`https://mail.google.com/mail/?view=cm&to=${resume.email}`} target="_blank" rel="noopener noreferrer">
             Email
           </a>
         </div>

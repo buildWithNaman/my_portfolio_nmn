@@ -5,8 +5,34 @@ import Projects from './components/Projects'
 import ContactForm from './components/ContactForm'
 import Skills from './components/Skills'
 import AiSummary from './components/AiSummary'
+import { useState } from "react";
+import FloatingAIBtn from "./components/FloatingAIBtn";
+import axios from "axios";
 
 export default function App(){
+
+const [summary, setSummary] = useState(null);
+const [loading, setLoading] = useState(false);
+
+async function handleAI() {
+  setLoading(true);
+  setSummary(null);
+
+  try {
+    const resp = await axios.post("/api/ai/summarize", {
+      text: `${resume.about}\n\nProjects:\n${resume.projects
+        .map((p) => p.title + ": " + p.description)
+        .join("\n")}`,
+    });
+
+    setSummary(resp.data.summary);
+  } catch (e) {
+    setSummary("Error generating summary.");
+  } finally {
+    setLoading(false);
+  }
+}
+
   return (
     <div className="min-h-screen text-gray-900">
       <header className="bg-white shadow-sm">
@@ -39,6 +65,9 @@ export default function App(){
         <Projects projects={resume.projects}/>
         <ContactForm resume={resume}/>
       </main>
+
+      <FloatingAIBtn onClick={handleAI} loading={loading} />
+      <AiSummary summary={summary} loading={loading} />
 
       <footer className="text-center py-8 text-sm text-gray-500">
         © {new Date().getFullYear()} {resume.name}
