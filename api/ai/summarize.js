@@ -16,26 +16,26 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Text is missing" });
     }
 
-    const OPENAI_KEY = process.env.OPENAI_API_KEY;
-    if (!OPENAI_KEY) {
-      return res.status(500).json({ error: "Missing OpenAI key" });
+    const GROQ_KEY = process.env.GROQ_API_KEY;
+    if (!GROQ_KEY) {
+      return res.status(500).json({ error: "Missing GROQ_API_KEY" });
     }
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${OPENAI_KEY}`,
+        "Authorization": `Bearer ${GROQ_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "llama-3.1-8b-instant",
         messages: [
           {
             role: "user",
             content: `Summarize the following in 2 lines:\n\n${text}`
           }
         ],
-        max_tokens: 120
+        max_tokens: 150
       })
     });
 
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
     const summary = data?.choices?.[0]?.message?.content;
 
     if (!summary) {
-      console.error("OpenAI response error:", data);
+      console.error("Groq API error:", data);
       return res.status(500).json({ summary: "Unable to generate summary. Try again." });
     }
 
