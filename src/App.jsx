@@ -1,37 +1,36 @@
-import React from 'react'
-import resume from './data/resume.json'
-import Hero from './components/Hero'
-import Projects from './components/Projects'
-import ContactForm from './components/ContactForm'
-import Skills from './components/Skills'
-import AiSummary from './components/AiSummary'
+import React from "react";
+import resume from "./data/resume.json";
+import Hero from "./components/Hero";
+import Projects from "./components/Projects";
+import ContactForm from "./components/ContactForm";
+import Skills from "./components/Skills";
+import AiSummary from "./components/AiSummary";
 import { useState } from "react";
 import FloatingAIBtn from "./components/FloatingAIBtn";
 import axios from "axios";
 
-export default function App(){
+export default function App() {
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-const [summary, setSummary] = useState(null);
-const [loading, setLoading] = useState(false);
+  async function handleAI() {
+    setLoading(true);
+    setSummary(null);
 
-async function handleAI() {
-  setLoading(true);
-  setSummary(null);
+    try {
+      const resp = await axios.post("/api/ai/summarize", {
+        text: `${resume.about}\n\nProjects:\n${resume.projects
+          .map((p) => p.title + ": " + p.description)
+          .join("\n")}`,
+      });
 
-  try {
-    const resp = await axios.post("/api/ai/summarize", {
-      text: `${resume.about}\n\nProjects:\n${resume.projects
-        .map((p) => p.title + ": " + p.description)
-        .join("\n")}`,
-    });
-
-    setSummary(resp.data.summary);
-  } catch (e) {
-    setSummary("Error generating summary.");
-  } finally {
-    setLoading(false);
+      setSummary(resp.data.summary);
+    } catch (e) {
+      setSummary("Error generating summary.");
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
   return (
     <div className="min-h-screen text-gray-900">
@@ -42,36 +41,72 @@ async function handleAI() {
             <p className="text-sm text-gray-500">{resume.title}</p>
           </div>
           <nav className="space-x-4">
-            <a href={resume.github} target="_blank" rel="noreferrer" className="text-sm">GitHub</a>
-            <a href={resume.linkedin} target="_blank" rel="noreferrer" className="text-sm">LinkedIn</a>
+            <a
+              href={resume.github}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm"
+            >
+              GitHub
+            </a>
+            <a
+              href={resume.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm"
+            >
+              LinkedIn
+            </a>
           </nav>
         </div>
       </header>
 
       <main className="max-w-5xl mx-auto p-6 space-y-12">
-        <Hero resume={resume}/>
+        <Hero resume={resume} />
         <section>
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">About</h2>
             <div className="flex gap-3 items-center">
-              <a href={resume.resume_pdf} target="_blank" className="text-sm underline">Download CV</a>
-              <AiSummary resumeText={`${resume.about}\n\nProjects:\n${resume.projects.map(p=>p.title+': '+p.description).join('\n')}`} />
+              <a
+                href={resume.resume_pdf}
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                className="
+    px-4 py-2 rounded-lg text-white text-sm font-medium
+    bg-gradient-to-r from-indigo-500 to-purple-600
+    shadow-md hover:shadow-xl hover:scale-[1.03]
+    transition-all duration-300 flex items-center gap-2
+  "
+              >
+                <span>Download CV</span>
+                📄
+              </a>
+              <AiSummary
+                resumeText={`${resume.about}\n\nProjects:\n${resume.projects
+                  .map((p) => p.title + ": " + p.description)
+                  .join("\n")}`}
+              />
             </div>
           </div>
           <p className="mt-4 text-gray-700">{resume.about}</p>
         </section>
 
-        <Skills skills={resume.skills}/>
-        <Projects projects={resume.projects}/>
-        <ContactForm resume={resume}/>
+        <Skills skills={resume.skills} />
+        <Projects projects={resume.projects} />
+        <ContactForm resume={resume} />
       </main>
 
       <FloatingAIBtn onClick={handleAI} loading={loading} />
-      <AiSummary summary={summary} loading={loading} onClose={() => setSummary(null)} />
+      <AiSummary
+        summary={summary}
+        loading={loading}
+        onClose={() => setSummary(null)}
+      />
 
       <footer className="text-center py-8 text-sm text-gray-500">
         © {new Date().getFullYear()} {resume.name}
       </footer>
     </div>
-  )
+  );
 }
