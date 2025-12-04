@@ -67,7 +67,7 @@ async function handleAI() {
       </main>
 
       <FloatingAIBtn onClick={handleAI} loading={loading} />
-      <AiSummary summary={summary} loading={loading} />
+      <AiSummary summary={summary} loading={loading} onClose={() => setSummary(null)} />
 
       <footer className="text-center py-8 text-sm text-gray-500">
         © {new Date().getFullYear()} {resume.name}

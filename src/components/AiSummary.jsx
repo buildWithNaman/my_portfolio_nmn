@@ -9,7 +9,7 @@ export default function AiSummary({ summary, loading, onClose }) {
       {/* Background overlay (click to close) */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-black/0 backdrop-blur-[0px] z-40"
+        className="fixed inset-0 bg-black/5 backdrop-blur-[3px] z-40"
       />
 
       {/* Summary box */}
