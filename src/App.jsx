@@ -67,21 +67,6 @@ export default function App() {
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">About</h2>
             <div className="flex gap-3 items-center">
-              <a
-                href={resume.resume_pdf}
-                target="_blank"
-                rel="noopener noreferrer"
-                download
-                className="
-    px-4 py-2 rounded-lg text-white text-sm font-medium
-    bg-gradient-to-r from-indigo-500 to-purple-600
-    shadow-md hover:shadow-xl hover:scale-[1.03]
-    transition-all duration-300 flex items-center gap-2
-  "
-              >
-                <span>Download CV</span>
-                📄
-              </a>
               <AiSummary
                 resumeText={`${resume.about}\n\nProjects:\n${resume.projects
                   .map((p) => p.title + ": " + p.description)
