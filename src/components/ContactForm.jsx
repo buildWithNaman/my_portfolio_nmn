@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import SuccessPopup from "./SuccessPopup";
 
 export default function ContactForm({ resume }) {
+  const formRef = useRef();
   const [showPopup, setShowPopup] = useState(false);
-
-  // Add proper form states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -21,12 +20,9 @@ export default function ContactForm({ resume }) {
     const data = await res.json();
 
     if (data.success) {
-      // Clear form
       setName("");
       setEmail("");
       setMessage("");
-
-      // Show popup
       setShowPopup(true);
     } else {
       alert("Failed to send message.");
@@ -34,51 +30,108 @@ export default function ContactForm({ resume }) {
   };
 
   return (
-    <section id="contact" className="mt-6">
-      <h3 className="text-xl font-semibold">Contact</h3>
+    <section id="contact" className="mt-10">
+      <h3 className="text-xl font-semibold">
+        Contact Me
+      </h3>
 
-      <form onSubmit={handleSubmit} className="mt-3 max-w-lg space-y-3">
-
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        className="mt-4 max-w-lg space-y-4"
+      >
+        {/* INPUT STYLES */}
         <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
           required
           placeholder="Your name"
-          className="w-full p-2 border rounded"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="
+            w-full p-3 rounded-lg bg-white dark:bg-gray-900/70
+            border border-gray-300 dark:border-cyan-500/20
+            focus:ring-2 focus:ring-indigo-500 dark:focus:ring-cyan-400
+            text-gray-900 dark:text-gray-100
+            transition-all outline-none
+          "
         />
 
         <input
+          required
+          type="email"
+          placeholder="Your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
-          placeholder="Your email"
-          className="w-full p-2 border rounded"
+          className="
+            w-full p-3 rounded-lg bg-white dark:bg-gray-900/70
+            border border-gray-300 dark:border-cyan-500/20
+            focus:ring-2 focus:ring-indigo-500 dark:focus:ring-cyan-400
+            text-gray-900 dark:text-gray-100
+            transition-all outline-none
+          "
         />
 
         <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
           required
           placeholder="Message"
-          className="w-full p-2 border rounded"
+          rows="4"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="
+            w-full p-3 rounded-lg
+            bg-white dark:bg-gray-900/70
+            border border-gray-300 dark:border-cyan-500/20
+            focus:ring-2 focus:ring-indigo-500 dark:focus:ring-cyan-400
+            text-gray-900 dark:text-gray-100
+            transition-all outline-none
+          "
         />
 
-        <div className="flex gap-3">
-          <button type="submit" className="px-4 py-2 bg-primary text-white rounded">
-            Send
+        {/* BUTTON GROUP */}
+        <div className="flex gap-3 flex-wrap">
+          <button
+            type="submit"
+            className="
+              px-5 py-3 rounded-lg font-medium text-white 
+              bg-indigo-600 hover:bg-indigo-700
+              dark:bg-cyan-500 dark:hover:bg-cyan-400
+              shadow-md dark:shadow-cyan-500/20
+              transition-all active:scale-95
+            "
+          >
+            Send ✉️
           </button>
 
-          <a className="px-4 py-2 rounded border" href={`tel:${resume.phone}`}>
-            Call
+          <a
+            className="
+              px-5 py-3 rounded-lg font-medium
+              bg-gray-200 text-gray-900
+              hover:bg-gray-300 transition
+              dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700
+              border border-gray-300 dark:border-gray-700
+              active:scale-95
+            "
+            href={`tel:${resume.phone}`}
+          >
+            Call 📞
           </a>
 
-          <a className="px-4 py-2 rounded border" href={`https://mail.google.com/mail/?view=cm&to=${resume.email}`} target="_blank" rel="noopener noreferrer">
-            Email
+          <a
+            className="
+              px-5 py-3 rounded-lg font-medium
+              bg-gray-200 text-gray-900
+              hover:bg-gray-300 transition
+              dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700
+              border border-gray-300 dark:border-gray-700
+              active:scale-95
+            "
+            href={`mailto:${resume.email}?subject=Contact from Portfolio`}
+          >
+            Email 📧
           </a>
         </div>
       </form>
 
-      {/* Success Popup */}
+      {/* SUCCESS POPUP */}
       {showPopup && <SuccessPopup onClose={() => setShowPopup(false)} />}
     </section>
   );

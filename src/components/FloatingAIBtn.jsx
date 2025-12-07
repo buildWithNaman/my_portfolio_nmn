@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function FloatingAIBtn({
@@ -17,7 +17,7 @@ export default function FloatingAIBtn({
 
   return (
     <>
-      {/* Desktop Floating AI Button */}
+      {/* Desktop AI Button */}
       {!open && (
         <motion.button
           onClick={onGenerate}
@@ -26,9 +26,17 @@ export default function FloatingAIBtn({
           transition={{ duration: 0.3 }}
           className="
             fixed bottom-6 right-6 z-50
-            bg-gradient-to-br from-indigo-600 to-purple-600 
-            text-white p-4 rounded-full shadow-xl
-            hover:shadow-2xl hover:scale-105 transition-all
+            p-4 rounded-full shadow-lg transition-all
+
+            /* Light Mode */
+            bg-indigo-600 text-white hover:shadow-xl
+
+            /* Dark Mode Neon */
+            dark:bg-black dark:text-cyan-300 
+            dark:border dark:border-cyan-400/50 
+            dark:shadow-[0_0_15px_rgba(0,255,255,0.3)]
+            dark:hover:shadow-[0_0_25px_rgba(0,255,255,0.5)]
+
             hidden md:flex
           "
         >
@@ -36,18 +44,19 @@ export default function FloatingAIBtn({
         </motion.button>
       )}
 
-      {/* Mobile Floating Menu Trigger */}
+      {/* Mobile Floating Trigger */}
       {!open && (
         <motion.button
           onClick={openSheet}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.25 }}
           className="
             fixed bottom-6 right-6 z-50
-            bg-indigo-600 text-white p-4 rounded-full shadow-xl
-            hover:shadow-2xl hover:scale-105 transition-all
-            md:hidden
+            p-4 rounded-full shadow-lg
+            transition-all md:hidden
+
+            bg-indigo-600 text-white 
+            dark:bg-black dark:text-cyan-300
+            dark:border dark:border-cyan-400/50
+            dark:shadow-[0_0_15px_rgba(0,255,255,0.3)]
           "
         >
           ✨
@@ -58,32 +67,39 @@ export default function FloatingAIBtn({
       <AnimatePresence>
         {open && (
           <>
-            {/* Dimmed Background */}
             <motion.div
               onClick={closeSheet}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
+              className="
+                fixed inset-0 z-40 md:hidden
+                bg-black/20 backdrop-blur-sm
+                dark:bg-black/50 dark:backdrop-blur
+              "
             />
 
-            {/* Action Menu */}
             <motion.div
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
-              transition={{
-                duration: 0.35,
-                ease: [0.25, 0.46, 0.45, 0.94], // iOS smooth curve
-              }}
-              className="fixed bottom-0 left-0 w-full p-5 
-                         bg-white rounded-t-2xl shadow-2xl z-50
-                         md:hidden"
-              onClick={(e) => e.stopPropagation()}
+              transition={{ duration: 0.3 }}
+              className="
+                fixed bottom-0 left-0 w-full z-50 md:hidden
+                p-6 rounded-t-2xl shadow-xl
+
+                /* LIGHT MODE */
+                bg-white text-gray-900
+
+                /* DARK MODE NEON */
+                dark:bg-black/90 dark:text-cyan-200
+                dark:border-t dark:border-cyan-400/40
+                dark:shadow-[0_-5px_20px_rgba(0,255,255,0.3)]
+                dark:backdrop-blur-xl
+              "
             >
-              <h4 className="text-lg font-semibold text-gray-900 text-center">
-                What would you like to do?
+              <h4 className="text-center font-bold text-lg">
+                Actions
               </h4>
 
               <div className="mt-4 space-y-3">
@@ -92,8 +108,17 @@ export default function FloatingAIBtn({
                     closeSheet();
                     onGenerate();
                   }}
-                  className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium
-                             active:scale-[0.97] transition"
+                  className="
+                    w-full py-3 rounded-lg font-medium
+
+                    /* Light */
+                    bg-indigo-600 text-white
+
+                    /* Dark */
+                    dark:bg-black dark:text-cyan-300
+                    dark:border dark:border-cyan-400/40
+                    dark:shadow-[0_0_15px_rgba(0,255,255,0.25)]
+                  "
                 >
                   ✨ Generate Summary
                 </button>
@@ -102,8 +127,16 @@ export default function FloatingAIBtn({
                   href={resumePdf}
                   target="_blank"
                   onClick={closeSheet}
-                  className="block w-full text-center bg-gray-900 text-white py-3 rounded-lg font-medium
-                             active:scale-[0.97] transition"
+                  className="
+                    block w-full text-center py-3 rounded-lg font-medium
+
+                    /* Light */
+                    bg-gray-900 text-white
+
+                    /* Dark */
+                    dark:bg-black dark:text-cyan-300
+                    dark:border dark:border-cyan-400/40
+                  "
                 >
                   📄 Download CV
                 </a>

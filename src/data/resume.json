@@ -1,6 +1,6 @@
 {
   "name": "Naman Sahu",
-  "title": "Java Developer",
+  "title": "Software Engineer",
   "email": "naman.sahu.2606@gmail.com",
   "phone": "+91-9977212663",
   "linkedin": "https://www.linkedin.com/in/naman-sahu-2502a8184/",
@@ -10,7 +10,7 @@
   "skills": ["Java", "Spring Boot", "Microservices", "MongoDB", "MySQL", "Kafka", "React"],
   "projects": [
     {
-      "title": "BDBDecisionPlatform",
+      "title": "BDB Decision Platform",
       "description": "Enterprise analytics platform — data ingestion, dashboards, and MLOps integrations.",
       "link": "https://www.bdb.ai"
     },
