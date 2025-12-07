@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import resume from "./data/resume.json";
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
 import ContactForm from "./components/ContactForm";
 import Skills from "./components/Skills";
 import AiSummary from "./components/AiSummary";
-import { useState } from "react";
 import FloatingAIBtn from "./components/FloatingAIBtn";
 import axios from "axios";
 
@@ -23,7 +22,6 @@ export default function App() {
           .map((p) => p.title + ": " + p.description)
           .join("\n")}`,
       });
-
       setSummary(resp.data.summary);
     } catch (e) {
       setSummary("Error generating summary.");
@@ -41,39 +39,18 @@ export default function App() {
             <p className="text-sm text-gray-500">{resume.title}</p>
           </div>
           <nav className="space-x-4">
-            <a
-              href={resume.github}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm"
-            >
-              GitHub
-            </a>
-            <a
-              href={resume.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm"
-            >
-              LinkedIn
-            </a>
+            <a href={resume.github} target="_blank" rel="noreferrer" className="text-sm">GitHub</a>
+            <a href={resume.linkedin} target="_blank" rel="noreferrer" className="text-sm">LinkedIn</a>
           </nav>
         </div>
       </header>
 
       <main className="max-w-5xl mx-auto p-6 space-y-12">
+
         <Hero resume={resume} />
+
         <section>
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-semibold">About</h2>
-            <div className="flex gap-3 items-center">
-              <AiSummary
-                resumeText={`${resume.about}\n\nProjects:\n${resume.projects
-                  .map((p) => p.title + ": " + p.description)
-                  .join("\n")}`}
-              />
-            </div>
-          </div>
+          <h2 className="text-2xl font-semibold">About</h2>
           <p className="mt-4 text-gray-700">{resume.about}</p>
         </section>
 
@@ -82,7 +59,15 @@ export default function App() {
         <ContactForm resume={resume} />
       </main>
 
-      <FloatingAIBtn onClick={handleAI} loading={loading} />
+      {/* Floating Button ALWAYS visible */}
+      <FloatingAIBtn 
+        onGenerate={handleAI} 
+        loading={loading} 
+        resumePdf={resume.resume_pdf}
+        onResetSummary={() => setSummary(null)}
+      />
+
+      {/* Summary Popup */}
       <AiSummary
         summary={summary}
         loading={loading}

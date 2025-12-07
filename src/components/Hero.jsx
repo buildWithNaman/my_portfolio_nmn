@@ -4,19 +4,21 @@ import { motion } from 'framer-motion'
 export default function Hero({ resume }) {
   return (
     <section className="grid md:grid-cols-2 gap-6 items-center">
-      
+
+      {/* Left Column */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
+        className="flex flex-col"
       >
         <h2 className="text-3xl md:text-4xl font-extrabold">
           Hi — I'm {resume.name}
         </h2>
         <p className="mt-4 text-gray-700">{resume.summary}</p>
 
-        {/* ⭐ Premium Download CV button */}
-        <div className="mt-6">
+        {/* Download CV button */}
+        <div className="mt-6 flex justify-center md:justify-start hidden md:flex">
           <a
             href={resume.resume_pdf}
             target="_blank"
@@ -36,20 +38,16 @@ export default function Hero({ resume }) {
               animate-fadeIn
             "
           >
-            {/* Shine effect */}
             <span className="absolute inset-0 bg-white/20 group-hover:translate-x-[200%] transition-transform duration-700 skew-x-12" />
-
-            {/* Icon + Slide animation */}
             <span className="transition-transform duration-300 group-hover:translate-x-1">
               📄
             </span>
-
             Download CV
           </a>
         </div>
       </motion.div>
 
-      {/* Right Side Profile Box */}
+      {/* Right Column */}
       <motion.div
         initial={{ scale: 0.98 }}
         animate={{ scale: 1 }}
