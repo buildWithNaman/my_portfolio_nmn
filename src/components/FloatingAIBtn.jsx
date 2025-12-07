@@ -50,7 +50,7 @@ export default function FloatingAIBtn({
             md:hidden
           "
         >
-          ☰
+          ✨
         </motion.button>
       )}
 
