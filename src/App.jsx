@@ -15,7 +15,9 @@ export default function App() {
 
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") ||
-    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light")
   );
 
   useEffect(() => {
@@ -23,22 +25,25 @@ export default function App() {
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
-  async function handleAI() {
+  async function handleAI(type, project) {
     setLoading(true);
     setSummary(null);
 
+    let text = "";
+
+    if (type === "resume") {
+      text = resume.about;
+    } else if (type === "project" && project) {
+      text = `${project.title}: ${project.description}`;
+    }
+
     try {
-      const resp = await axios.post("/api/ai/summarize", {
-        text: `${resume.about}\n\nProjects:\n${resume.projects
-          .map((p) => p.title + ": " + p.description)
-          .join("\n")}`,
-      });
+      const resp = await axios.post("/api/ai/summarize", { text });
       setSummary(resp.data.summary);
-    } catch (e) {
+    } catch (err) {
+      console.error("AI Summary Error:", err);
       setSummary("Error generating summary.");
     } finally {
       setLoading(false);
@@ -46,33 +51,60 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen 
-                text-gray-900 dark:text-[#e2e8f0] 
-                bg-white dark:bg-black  
-                transition-colors duration-500">
-      <header className="bg-white dark:bg-black/60 backdrop-blur-md
-                border-b border-gray-200/20 dark:border-cyan-500/20 
-              shadow-lg transition-all duration-500">
+    <div
+      className="min-h-screen 
+      text-gray-900 dark:text-[#e2e8f0]
+      bg-white dark:bg-black
+      transition-colors duration-500"
+    >
+      {/* Header */}
+      <header
+        className="
+        bg-white dark:bg-black/60 
+        backdrop-blur-md 
+        border-b border-gray-200/20 dark:border-cyan-500/20
+        shadow-lg transition-all duration-500"
+      >
         <div className="max-w-5xl mx-auto p-4 flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold">{resume.name}</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-300">{resume.title}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-300">
+              {resume.title}
+            </p>
           </div>
+
           <nav className="space-x-4 flex items-center gap-3">
-            <a href={resume.github} target="_blank" rel="noreferrer" className="text-sm">GitHub</a>
-            <a href={resume.linkedin} target="_blank" rel="noreferrer" className="text-sm">LinkedIn</a>
+            <a
+              href={resume.github}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm"
+            >
+              GitHub
+            </a>
+            <a
+              href={resume.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm"
+            >
+              LinkedIn
+            </a>
+
             <ThemeSwitcher theme={theme} toggleTheme={toggleTheme} />
           </nav>
         </div>
       </header>
 
+      {/* Main Content */}
       <main className="max-w-5xl mx-auto p-6 space-y-12">
-
         <Hero resume={resume} />
 
         <section>
           <h2 className="text-2xl font-semibold">About</h2>
-          <p className="mt-4 text-gray-700 dark:text-gray-300">{resume.about}</p>
+          <p className="mt-4 text-gray-700 dark:text-gray-300">
+            {resume.about}
+          </p>
         </section>
 
         <Skills skills={resume.skills} />
@@ -80,12 +112,13 @@ export default function App() {
         <ContactForm resume={resume} />
       </main>
 
-      {/* Floating Button ALWAYS visible */}
-      <FloatingAIBtn 
-        onGenerate={handleAI} 
-        loading={loading} 
+      {/* AI Floating Button */}
+      <FloatingAIBtn
+        onGenerate={() => handleAI("resume")}
+        onGenerateProject={(proj) => handleAI("project", proj)}
+        loading={loading}
         resumePdf={resume.resume_pdf}
-        onResetSummary={() => setSummary(null)}
+        projects={resume.projects}
       />
 
       {/* Summary Popup */}
@@ -95,6 +128,7 @@ export default function App() {
         onClose={() => setSummary(null)}
       />
 
+      {/* Footer */}
       <footer className="text-center py-8 text-sm text-gray-500 dark:text-gray-400">
         © {new Date().getFullYear()} {resume.name}
       </footer>
