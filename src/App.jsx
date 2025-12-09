@@ -119,6 +119,7 @@ export default function App() {
         loading={loading}
         resumePdf={resume.resume_pdf}
         projects={resume.projects}
+        onCloseSummary={() => setSummary(null)}
       />
 
       {/* Summary Popup */}

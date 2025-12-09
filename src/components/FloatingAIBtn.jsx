@@ -2,15 +2,15 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 export default function FloatingAIBtn({
   onGenerate,
-  onGenerateAbout,
   onGenerateProject,
   projects = [],
-  loading,
   resumePdf,
+  onCloseSummary
 }) {
   const [open, setOpen] = useState(false);
   const [selectProject, setSelectProject] = useState(false);
   const openMenu = () => {
+    if (onCloseSummary) onCloseSummary();
     setSelectProject(false);
     setOpen(true);
   };
@@ -85,6 +85,7 @@ export default function FloatingAIBtn({
                 <button
                   className="w-full py-3 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 dark:hover:bg-cyan-500 transition mb-3"
                   onClick={() => {
+                    if (onCloseSummary) onCloseSummary();
                     closeMenu();
                     onGenerate();
                   }}
@@ -108,6 +109,7 @@ export default function FloatingAIBtn({
                     key={idx}
                     className="block w-full text-left p-3 mb-2 bg-gray-100 hover:bg-gray-200 dark:bg-black dark:hover:bg-gray-900 rounded-lg border border-gray-300 dark:border-cyan-400 dark:text-cyan-300"
                     onClick={() => {
+                      if (onCloseSummary) onCloseSummary();
                       closeMenu();
                       onGenerateProject(p);
                     }}
@@ -146,6 +148,7 @@ export default function FloatingAIBtn({
                 {" "}
                 <button
                   onClick={() => {
+                    if (onCloseSummary) onCloseSummary();
                     closeMenu();
                     onGenerate();
                   }}
@@ -179,6 +182,7 @@ export default function FloatingAIBtn({
                     key={idx}
                     className="block w-full text-left p-3 mb-2 bg-gray-100 dark:bg-black/70 border border-gray-200 dark:border-cyan-500/40 rounded-lg"
                     onClick={() => {
+                      if (onCloseSummary) onCloseSummary();
                       closeMenu();
                       onGenerateProject(p);
                     }}
