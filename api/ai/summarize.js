@@ -10,9 +10,9 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: "Only POST allowed" });
     }
 
-    const { text } = req.body;
+    const { systemPrompt, userText } = req.body;
 
-    if (!text || text.trim() === "") {
+    if (!userText || userText.trim() === "") {
       return res.status(400).json({ error: "Text is missing" });
     }
 
@@ -33,37 +33,30 @@ export default async function handler(req, res) {
           model: "llama-3.1-8b-instant",
           messages: [
             {
+              role: "system",
+              content: systemPrompt || "You are a helpful AI.",
+            },
+            {
               role: "user",
-              content: `
-Summarize the following text in EXACTLY 2 lines.
-
-STRICT RULES:
-- Do NOT include any intro text like "Here's the summary".
-- Do NOT include headings.
-- Return ONLY the 2-line summary and nothing else.
-
-Text:
-${text}
-`,
+              content: userText,
             },
           ],
-          max_tokens: 150,
+          max_tokens: 250,
+          temperature: 0.4,
         }),
       }
     );
 
     const data = await response.json();
-
-    const summary = data?.choices?.[0]?.message?.content;
+    const summary = data?.choices?.[0]?.message?.content?.trim();
 
     if (!summary) {
-      console.error("Groq API error:", data);
-      return res
-        .status(500)
-        .json({ summary: "Unable to generate summary. Try again." });
+      console.error("Groq API issue:", data);
+      return res.status(500).json({ summary: "Unable to generate summary." });
     }
 
     return res.status(200).json({ summary });
+
   } catch (err) {
     console.error("Server error:", err);
     return res
