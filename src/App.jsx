@@ -31,20 +31,30 @@ export default function App() {
     setLoading(true);
     setSummary(null);
 
-    let text = "";
-
+    let baseText = "";
     if (type === "resume") {
-      text = resume.about;
+      baseText = resume.about;
     } else if (type === "project" && project) {
-      text = `${project.title}: ${project.description}`;
+      baseText = `${project.title}: ${project.description}`;
     }
 
+    const prompt = `
+  Create a highly polished and refined summary.
+  Use strong, confident language.
+  Focus on achievements and strengths.
+  Avoid generic phrases like “I am passionate” or “I love to”.
+  Keep sentences well-structured and engaging.
+
+  Base Details:
+  ${baseText}
+  `;
+
     try {
-      const resp = await axios.post("/api/ai/summarize", { text });
+      const resp = await axios.post("/api/ai/summarize", { text: prompt });
       setSummary(resp.data.summary);
     } catch (err) {
       console.error("AI Summary Error:", err);
-      setSummary("Error generating summary.");
+      setSummary("⚠️ Error generating summary.");
     } finally {
       setLoading(false);
     }
