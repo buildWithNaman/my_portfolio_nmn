@@ -31,27 +31,44 @@ export default function App() {
     setLoading(true);
     setSummary(null);
 
-    let baseText = "";
+    let details = "";
+
     if (type === "resume") {
-      baseText = resume.about;
+      details = `About Me:\n${resume.about}`;
     } else if (type === "project" && project) {
-      baseText = `${project.title}: ${project.description}`;
+      details = `
+    Project Name: ${project.title}
+    Description: ${project.description}
+    Technologies: ${project.technologies?.join(", ") || "N/A"}
+    Key Focus: What problem does it solve? Who benefits?
+    Expected Outcome: Efficiency, user experience, automation, etc.
+    `;
     }
 
     const prompt = `
-  Create a highly polished and refined summary.
-  Use strong, confident language.
-  Focus on achievements and strengths.
-  Avoid generic phrases like “I am passionate” or “I love to”.
-  Keep sentences well-structured and engaging.
+  Write a professional summary without introduction phrases like:
+  “This is...”, “Here is...”, “Below is...”.
 
-  Base Details:
-  ${baseText}
+  Tone:
+  • Confident, polished, energetic
+  • Show skills, ownership & achievements
+  • Real industry language (not generic lines)
+  • Do not repeat the same sentence structure
+
+  Format:
+  - 3–5 engaging bullet points
+  - Each bullet 12–18 words max
+  - No emojis
+  - No section titles
+  - Start directly with the first bullet point
+
+  Details to transform:
+  ${details}
   `;
 
     try {
       const resp = await axios.post("/api/ai/summarize", { text: prompt });
-      setSummary(resp.data.summary);
+      setSummary(resp.data.summary.trim());
     } catch (err) {
       console.error("AI Summary Error:", err);
       setSummary("⚠️ Error generating summary.");
