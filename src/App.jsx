@@ -34,41 +34,52 @@ export default function App() {
     let details = "";
 
     if (type === "resume") {
-      details = `About Me:\n${resume.about}`;
+      details = resume.about;
     } else if (type === "project" && project) {
-      details = `
-    Project Name: ${project.title}
-    Description: ${project.description}
-    Technologies: ${project.technologies?.join(", ") || "N/A"}
-    Key Focus: What problem does it solve? Who benefits?
-    Expected Outcome: Efficiency, user experience, automation, etc.
-    `;
+      details = `${project.title}: ${project.description}`;
     }
 
-    const prompt = `
-  Write a professional summary without introduction phrases like:
-  “This is...”, “Here is...”, “Below is...”.
-
-  Tone:
-  • Confident, polished, energetic
-  • Show skills, ownership & achievements
-  • Real industry language (not generic lines)
-  • Do not repeat the same sentence structure
-
-  Format:
-  - 3–5 engaging bullet points
-  - Each bullet 12–18 words max
-  - No emojis
-  - No section titles
-  - Start directly with the first bullet point
-
-  Details to transform:
-  ${details}
-  `;
-
     try {
-      const resp = await axios.post("/api/ai/summarize", { text: prompt });
-      setSummary(resp.data.summary.trim());
+      const resp = await axios.post("/api/ai/summarize", {
+        systemPrompt: `
+        You are a professional resume and portfolio writer.
+        
+        ✦ NEVER include meta instructions such as:
+        - "Here is"
+        - "Below is"
+        - "This summary"
+        - "Craft a"
+        - "Use bullet points"
+        - "Summary:"
+        - "Professional tone"
+        - JSON format
+
+        ✦ Formatting Rules:
+        - Output ONLY bullet points
+        - 3–5 bullets max
+        - Each bullet ≤ 18 words
+        - No emojis
+        - No quotes
+        - Must start directly with a bullet
+      `,
+        userText: details,
+      });
+
+      let cleaned = resp.data.summary
+        .replace(/(\"|\{|\}|Here.*?:|Below.*?:|Craft.*?:|Use.*?format)/gi, "")
+        .trim();
+
+      // Fallback: enforce bullet formatting if missing
+      if (!cleaned.startsWith("•") && !cleaned.startsWith("-")) {
+        cleaned = cleaned
+          .split(/\n+/)
+          .map((line) => line.trim())
+          .filter((line) => line.length > 3)
+          .map((line) => "• " + line)
+          .join("\n");
+      }
+
+      setSummary(cleaned);
     } catch (err) {
       console.error("AI Summary Error:", err);
       setSummary("⚠️ Error generating summary.");
