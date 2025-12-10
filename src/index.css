@@ -15,3 +15,23 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.6s ease-out;
 }
+
+/* Smooth scrolling everywhere */
+html {
+  scroll-behavior: smooth;
+}
+
+/* AI Summary popup smooth scroll (mobile momentum + desktop smoothing) */
+.smooth-scroll {
+  scroll-behavior: smooth;               /* generic smooth */
+  -webkit-overflow-scrolling: touch;     /* iOS buttery scroll */
+}
+
+/* Hide scrollbars cleanly */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

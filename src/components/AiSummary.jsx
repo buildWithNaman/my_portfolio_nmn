@@ -31,6 +31,7 @@ export default function AiSummary({ summary, loading, onClose }) {
           /* Height control (scrollable if overflow) */
           max-h-[70vh] md:max-h-[60vh]
           overflow-y-auto
+          smooth-scroll scrollbar-hide
 
           p-4 z-50
           rounded-2xl border shadow-2xl
