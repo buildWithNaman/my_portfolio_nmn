@@ -23,7 +23,11 @@ export default function AiSummary({ summary, loading, onClose }) {
         exit={{ opacity: 0, y: 12 }}
         transition={{ duration: 0.3 }}
         className="
-          fixed bottom-20 right-6 w-80 p-4 z-50
+          fixed 
+          bottom-[110px] md:bottom-[100px]   /* Lift popup above Floating Button */
+          right-4 md:right-6 
+          w-[90%] md:w-80 
+          p-4 z-50
           rounded-2xl border shadow-2xl
 
           /* Light Mode */
@@ -36,24 +40,31 @@ export default function AiSummary({ summary, loading, onClose }) {
           dark:backdrop-blur-2xl
         "
       >
-        <h3 className="
-          text-lg font-semibold mb-2 
-          text-gray-800 dark:text-cyan-300 
-          dark:drop-shadow-[0_0_10px_rgba(0,255,255,0.35)]
-        ">
+        <h3
+          className="
+            text-lg font-semibold mb-2 
+            text-gray-800 dark:text-cyan-300 
+            dark:drop-shadow-[0_0_10px_rgba(0,255,255,0.35)]
+          "
+        >
           ✨ AI Summary
         </h3>
 
         {loading ? (
           <p className="text-gray-600 dark:text-gray-400 italic">Generating…</p>
         ) : (
-          <p className="
-            text-gray-700 dark:text-gray-200
-            whitespace-pre-line leading-relaxed
-          ">
+          <p
+            className="
+              text-gray-700 dark:text-gray-200
+              whitespace-pre-line leading-relaxed
+            "
+          >
             {summary}
           </p>
         )}
+
+        {/* Prevent overlap with floating button */}
+        <div className="h-20 md:h-10"></div>
       </motion.div>
     </>
   );
