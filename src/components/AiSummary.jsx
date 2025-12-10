@@ -5,7 +5,7 @@ export default function AiSummary({ summary, loading, onClose }) {
 
   return (
     <>
-      {/* Background overlay (click to close) */}
+      {/* Background overlay */}
       <div
         onClick={onClose}
         className="
@@ -16,7 +16,7 @@ export default function AiSummary({ summary, loading, onClose }) {
         "
       />
 
-      {/* Summary box */}
+      {/* Summary Popup */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -24,22 +24,28 @@ export default function AiSummary({ summary, loading, onClose }) {
         transition={{ duration: 0.3 }}
         className="
           fixed 
-          bottom-[110px] md:bottom-[100px]   /* Lift popup above Floating Button */
+          bottom-28 md:bottom-24 
           right-4 md:right-6 
           w-[90%] md:w-80 
+
+          /* Height control (scrollable if overflow) */
+          max-h-[70vh] md:max-h-[60vh]
+          overflow-y-auto
+
           p-4 z-50
           rounded-2xl border shadow-2xl
 
-          /* Light Mode */
+          /* Light */
           bg-white text-gray-800 border-gray-200
 
-          /* Dark Mode Neon */
+          /* Dark Neon */
           dark:bg-black/70 dark:text-cyan-200 
           dark:border-cyan-400/40 
           dark:shadow-[0_0_28px_rgba(0,255,255,0.25)]
           dark:backdrop-blur-2xl
         "
       >
+        {/* Title */}
         <h3
           className="
             text-lg font-semibold mb-2 
@@ -50,6 +56,7 @@ export default function AiSummary({ summary, loading, onClose }) {
           ✨ AI Summary
         </h3>
 
+        {/* Summary Content */}
         {loading ? (
           <p className="text-gray-600 dark:text-gray-400 italic">Generating…</p>
         ) : (
@@ -62,10 +69,10 @@ export default function AiSummary({ summary, loading, onClose }) {
             {summary}
           </p>
         )}
-
-        {/* Prevent overlap with floating button */}
-        <div className="h-20 md:h-10"></div>
       </motion.div>
+
+      {/* Spacer OUTSIDE popup so it never overlaps floating button */}
+      <div className="h-24 md:h-10"></div>
     </>
   );
 }
